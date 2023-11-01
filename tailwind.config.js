@@ -11,16 +11,24 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        poppins: ["Poppins", ...defaultTheme.fontFamily.sans],
-        aktiv: ["aktiv-grotesk-extended", ...defaultTheme.fontFamily.sans],
+        inter: ["Inter", ...defaultTheme.fontFamily.sans],
+        satoshi: ["Satoshi", ...defaultTheme.fontFamily.sans],
       },
       colors: {
         purple: {
-          200: "#BCACFA",
+          50: "#ECECFC",
+          100: "#D8D9F9",
+          200: "#B1B3F4",
           300: "#9A83F8",
-          500: "rgba(87, 48, 243, 1)",
-          900: "#110A31",
+          400: "#6466E9",
+          500: "#3D40E3",
+          800: "#1B1D6C",
+          900: "#0F1145",
+          1000: "#04051D",
         },
+        orange: {
+          500: "#FF957D"
+        }
       },
       boxShadow: {
         button:
@@ -60,9 +68,10 @@ module.exports = {
   plugins: [
     require("tailwindcss"),
     require("autoprefixer"),
+    require("tailwindcss-debug-screens"),
     plugin(function ({ addVariant }) {
       addVariant("state-open", '&[data-state="open"]');
       addVariant("group-state-open", '[data-state="open"] &');
-    }),
+    },),
   ],
 };
