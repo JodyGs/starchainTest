@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://starchaingazer.io
+
+# Sitemaps
+Sitemap: https://starchaingazer.io/sitemap.xml

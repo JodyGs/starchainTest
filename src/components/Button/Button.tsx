@@ -1,24 +1,41 @@
 import React from "react";
 import clsx from "clsx";
+import { Arrow } from "@/svgs";
 
-function Button({
-  children,
-  className,
-  ...props
-}: React.AnchorHTMLAttributes<HTMLAnchorElement>) {
-  return (
-    <a
-      type="button"
-      className={clsx(
-        className,
-        "bg-purple-500 py-2 px-6 rounded-[32px] font-poppins font-bold text-sm shadow-button tracking-[.1em] leading-6",
-        "hover:opacity-80 active:opacity-100 transition-opacity"
-      )}
-      {...props}
-    >
-      {children}
-    </a>
-  );
+type Props = React.ComponentProps<"button"> & {
+	variant?: "primary" | "secondary";
+	children?: React.ReactNode;
+	size?: "small" | "default";
+	arrow?: boolean;
+};
+
+export default function Button({
+	className,
+	variant = "primary",
+	children = "Button",
+	size = "default",
+	arrow = true,
+	...rest
+}: Props) {
+	return (
+		<button
+			className={clsx(
+				className,
+				"rounded-xl font-satoshi font-bold leading-6 flex ring-[8px] ring-transparent",
+				"hover:ring-[#F25C8F]/30 hover:gradient-button transition-all duration-200 hover:text-white",
+				{
+					"bg-white text-purple-800": variant === "primary",
+					"bg-purple-500 text-white": variant === "secondary",
+				},
+				{
+					"py-4 px-6": size === "small",
+					"py-4 pl-6 pr-5": size === "default",
+				}
+			)}
+			{...rest}
+		>
+			{children}
+			{arrow && <Arrow className="ml-2 h-6 w-6" />}
+		</button>
+	);
 }
-
-export default Button;
