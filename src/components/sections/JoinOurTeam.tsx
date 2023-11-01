@@ -5,14 +5,14 @@ import type { PutBlobResult } from "@vercel/blob";
 import Button from "../Button";
 import { Chevron, Clip } from "@/svgs";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { upload } from "@vercel/blob/client";
 
 import { ITEM_VARIANTS } from "@/utils/anims";
-import classNames from "clsx";
 
 const ROLE_OPTIONS = [
 	{
 		id: 1,
-		value: "Tobi",
+		value: "Obito",
 		label: "Obito Uchiwa",
 	},
 	{
@@ -27,7 +27,7 @@ function DropdownMenuDemo() {
 
 	return (
 		<DropdownMenu.Root>
-			<DropdownMenu.Trigger asChild>
+			<DropdownMenu.Trigger asChild className="relative">
 				<button
 					className="flex items-center p-2 pl-4 bg-[#8B8CEE]/20 border border-purple-400 rounded-xl font-inter leading-6 text-lg flex-1 justify-between text-purple-200 w-full"
 					aria-label="Customise options"
@@ -40,8 +40,11 @@ function DropdownMenuDemo() {
 			</DropdownMenu.Trigger>
 
 			<DropdownMenu.Portal>
-				<DropdownMenu.Content className=" bg-purple-200" sideOffset={5}>
-					<DropdownMenu.Label className="DropdownMenuLabel">
+				<DropdownMenu.Content
+					className=" bg-[#0f1145] p-4 space-y-2 rounded-xl shadow-xl"
+					sideOffset={5}
+				>
+					<DropdownMenu.Label className="border-b-[1px] border-white/60">
 						Your role
 					</DropdownMenu.Label>
 					<DropdownMenu.RadioGroup value={role} onValueChange={setRole}>
@@ -66,10 +69,12 @@ function DropdownMenuDemo() {
 
 export default function JoinOurTeam(props: HTMLMotionProps<"section">) {
 	const inputFileRef = React.useRef<HTMLInputElement>(null);
+	const roleRef = React.useRef<HTMLInputElement>(null);
 	const [blob, setBlob] = React.useState<PutBlobResult | null>(null);
+	const [fileName, setFileName] = React.useState("Upload your CV");
 
-	async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-		event.preventDefault();
+	async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+		e.preventDefault();
 
 		if (!inputFileRef.current?.files) {
 			throw new Error("No file selected");
@@ -108,27 +113,37 @@ export default function JoinOurTeam(props: HTMLMotionProps<"section">) {
 				</motion.p>
 				<div>
 					<form onSubmit={handleSubmit} className="space-y-4 relative">
-						<DropdownMenuDemo />
+						<DropdownMenuDemo ref={roleRef} />
 						<div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 space-x-4 col-span-full items-center">
 							<label
+								onClick={() =>
+									document.querySelector<HTMLInputElement>("#file")?.click()
+								}
 								htmlFor="file"
 								className="flex w-full items-center p-2 pl-4 bg-[#8B8CEE]/20 border border-purple-400 rounded-xl font-inter leading-6 text-lg flex-1 justify-between text-purple-200 whitespace-pre"
 							>
-								Upload your CV
+								{fileName}
 								<span className="p-2 bg-purple-900 rounded-[4px]">
 									<Clip className="h-6 w-6" />
 								</span>
 							</label>
 							<input
 								name="file"
+								id="file"
 								ref={inputFileRef}
 								type="file"
 								required
 								className="hidden"
+								onChange={({ target: { files } }) => {
+									if (!files) {
+										return;
+									}
+									setFileName(files[0].name);
+								}}
 							/>
 							<Button
 								type="submit"
-								className="border border-white/40 px-6 py-3 rounded-xl font-bold"
+								className="border border-white/40 px-6 py-3 rounded-xl font-bold shrink-0"
 							>
 								Apply for a job
 							</Button>
