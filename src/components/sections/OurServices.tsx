@@ -269,7 +269,7 @@ export default function OurServices(props: HTMLMotionProps<"section">) {
 							/>
 						))}
 					</div>
-					<Button>Work with us</Button>
+					<Button href="#joinOurTeam">Work with us</Button>
 				</motion.div>
 			</div>
 		</Section>
